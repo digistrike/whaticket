@@ -23,7 +23,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN corepack enable && corepack prepare pnpm@latest --force && pnpm install
+RUN npm install -g pnpm@7 && pnpm install
 
 COPY . .
 RUN pnpm build
