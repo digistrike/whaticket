@@ -1,56 +1,44 @@
-import {
-  Table,
-  Column,
-  CreatedAt,
-  UpdatedAt,
-  Model,
-  PrimaryKey,
-  AutoIncrement,
-  AllowNull,
-  Unique,
-  Default,
-  HasMany
-} from "sequelize-typescript";
+import * as sequelizeTypescript from "sequelize-typescript";
 import ContactCustomField from "./ContactCustomField";
 import Ticket from "./Ticket";
 
-@Table
-class Contact extends Model<Contact> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
+@sequelizeTypescript.Table
+class Contact extends sequelizeTypescript.Model<Contact> {
+  @sequelizeTypescript.PrimaryKey
+  @sequelizeTypescript.AutoIncrement
+  @sequelizeTypescript.Column
   id: number;
 
-  @Column
+  @sequelizeTypescript.Column
   name: string;
 
-  @AllowNull(false)
-  @Unique
-  @Column
+  @sequelizeTypescript.AllowNull(false)
+  @sequelizeTypescript.Unique
+  @sequelizeTypescript.Column
   number: string;
 
-  @AllowNull(false)
-  @Default("")
-  @Column
+  @sequelizeTypescript.AllowNull(false)
+  @sequelizeTypescript.Default("")
+  @sequelizeTypescript.Column
   email: string;
 
-  @Column
+  @sequelizeTypescript.Column
   profilePicUrl: string;
 
-  @Default(false)
-  @Column
+  @sequelizeTypescript.Default(false)
+  @sequelizeTypescript.Column
   isGroup: boolean;
 
-  @CreatedAt
+  @sequelizeTypescript.CreatedAt
   createdAt: Date;
 
-  @UpdatedAt
+  @sequelizeTypescript.UpdatedAt
   updatedAt: Date;
 
-  @HasMany(() => Ticket)
+  @sequelizeTypescript.HasMany(() => Ticket)
   tickets: Ticket[];
 
-  @HasMany(() => ContactCustomField)
+  @sequelizeTypescript.HasMany(() => ContactCustomField)
   extraInfo: ContactCustomField[];
 }
 

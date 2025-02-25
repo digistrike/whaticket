@@ -38,12 +38,22 @@ const UpdateUserService = async ({
     password: Yup.string()
   });
 
-  const { email, password, profile, name, queueIds = [], whatsappId } = userData;
+  const {
+    email,
+    password,
+    profile,
+    name,
+    queueIds = [],
+    whatsappId
+  } = userData;
 
   try {
     await schema.validate({ email, password, profile, name });
-  } catch (err) {
-    throw new AppError(err.message);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new AppError(err.message);
+    }
+    throw new AppError("ERR_VALIDATION_FAILED");
   }
 
   await user.update({
@@ -51,7 +61,7 @@ const UpdateUserService = async ({
     password,
     profile,
     name,
-    whatsappId: whatsappId ? whatsappId : null
+    whatsappId: whatsappId || null
   });
 
   await user.$set("queues", queueIds);

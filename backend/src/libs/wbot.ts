@@ -43,16 +43,15 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
         sessionCfg = JSON.parse(whatsapp.session);
       }
 
-      const args:String = process.env.CHROME_ARGS || "";
+      const args: string = process.env.CHROME_ARGS || "";
 
       const wbot: Session = new Client({
         session: sessionCfg,
-        authStrategy: new LocalAuth({clientId: 'bd_'+whatsapp.id}),
+        authStrategy: new LocalAuth({ clientId: `bd_${whatsapp.id}` }),
         puppeteer: {
           executablePath: process.env.CHROME_BIN || undefined,
-          // @ts-ignore
           browserWSEndpoint: process.env.CHROME_WS || undefined,
-          args: args.split(' ')
+          args: args.split(" ")
         }
       });
 
@@ -75,7 +74,7 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
         });
       });
 
-      wbot.on("authenticated", async session => {
+      wbot.on("authenticated", async () => {
         logger.info(`Session: ${sessionName} AUTHENTICATED`);
       });
 
@@ -127,8 +126,12 @@ export const initWbot = async (whatsapp: Whatsapp): Promise<Session> => {
 
         resolve(wbot);
       });
-    } catch (err) {
-      logger.error(err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        logger.error(err);
+      } else {
+        logger.error(String(err));
+      }
     }
   });
 };
@@ -149,7 +152,11 @@ export const removeWbot = (whatsappId: number): void => {
       sessions[sessionIndex].destroy();
       sessions.splice(sessionIndex, 1);
     }
-  } catch (err) {
-    logger.error(err);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      logger.error(err);
+    } else {
+      logger.error(String(err));
+    }
   }
 };
