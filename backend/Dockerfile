@@ -23,10 +23,10 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install
+RUN npm install -g pnpm && pnpm install
 
 COPY . .
-RUN npm run build
+RUN pnpm build
 
 ENV NODE_ENV=production
 ENV PORT=3000
